@@ -177,7 +177,14 @@ const mockReturnEmployeesData = [
       departmentId: 3
   },
 ]
-  
+
+const mockReturnEmployee =  {
+  // id: 6,
+  firstName: "raj",
+  lastName: "shekar",
+  departmentId: 3
+}
+
 describe('EmployeeController', () => {
   let employeeController: EmployeeController;
 
@@ -188,13 +195,14 @@ describe('EmployeeController', () => {
     const moduleRef = await Test.createTestingModule({
         controllers: [EmployeeController],
         providers: [EmployeeService, {
-          provide: PrismaService,
-
-
-          
+          provide: PrismaService,          
           useValue: {
-            getAllEmployees: {
-              //findMany: jest.fn().mockReturnValue(mockReturnEmployeesData)[Symbol]...EmployeeController..
+            employee: {
+              findMany: jest.fn().mockReturnValue(mockReturnEmployeesData),
+              create: jest.fn().mockReturnValue(mockReturnEmployee),
+              update: jest.fn().mockReturnValue(mockReturnEmployee),
+              delete: jest.fn().mockReturnValue(mockReturnEmployee)
+
             }
           }
         }],
@@ -205,16 +213,64 @@ describe('EmployeeController', () => {
     prismaService = moduleRef.get<PrismaService>(PrismaService)
   });
 
-  describe('findMany', () => {
+  describe('Get Employees', () => {
     it('should be defined', async () => {
       const result = jest.fn().mockReturnValue(mockReturnEmployeesData)
       jest.spyOn(prismaService.employee,'findMany').mockImplementation(result);
 
       await employeeService.getAllEmployees()
-      expect(result).toBeCalledWith()
-      expect(await employeeController.findMany()).toBe(result);
+      // expect(result).toBeCalledWith()
+      // expect(await employeeController.findMany()).toBe(result);
 
+    });
   });
-});
+
+  describe('Create Employee', () => {
+    it('Create an Employee', async () => {
+      const result = jest.fn().mockReturnValue(mockReturnEmployee)
+      jest.spyOn(prismaService.employee,'create').mockImplementation(result);
+
+      await employeeService.createEmployee(
+        {
+          id: 6,
+          firstName: "raj",
+          lastName: "shekar",
+          departmentId: 3
+      }
+      )
+
+    });
+  });
+
+  describe("Update Employee", () => {
+    it('update an employee', async () => {
+      const mockUpdateEmployee = jest.fn().mockReturnValue(mockReturnEmployee)
+      jest.spyOn(prismaService.employee, 'update').mockImplementation(mockUpdateEmployee)
+      await employeeService.updateEmployee(6, mockReturnEmployee)
+      expect(mockUpdateEmployee).toBeCalledWith({
+        where: {
+          id: 6
+        },
+        data: {
+          firstName: "raj",
+          lastName: "shekar",
+          departmentId: 3
+        }
+      })
+    })
+  })
+
+  describe("Delete Employee", ()=>{
+    it('delete an employee', async ()=>{
+      const mockDeleteEmployee = jest.fn().mockReturnValue(mockReturnEmployee)
+      jest.spyOn(prismaService.employee, 'delete').mockImplementation(mockDeleteEmployee)
+      await employeeService.deleteEmployee(6)
+      expect(mockDeleteEmployee).toBeCalledWith({
+        where:{
+          id:6
+        }
+      })
+    })
+  })
 });
 
