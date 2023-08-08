@@ -160,12 +160,128 @@
 
 
 
+// import { Test } from '@nestjs/testing';
+// import { EmployeeController } from './employee.controller';
+// import { EmployeeService } from './employee.service';
+// import supertest from 'supertest';
+// import { PrismaService } from 'src/prisma.service';
+// import { Module, NotFoundException } from '@nestjs/common';
+// import { Prisma } from '@prisma/client';
+
+    
+// const mockReturnEmployeesData = [
+//   {
+//       id: 6,
+//       firstName: "raj",
+//       lastName: "shekar",
+//       departmentId: 3
+//   },
+// ]
+
+// const mockReturnEmployee =  {
+//   // id: 6,
+//   firstName: "raj",
+//   lastName: "shekar",
+//   departmentId: 3
+// }
+
+// describe('EmployeeController', () => {
+//   let employeeController: EmployeeController;
+
+//   let employeeService: EmployeeService;
+//   let prismaService: PrismaService
+
+//   beforeEach(async () => {
+//     const moduleRef = await Test.createTestingModule({
+//         controllers: [EmployeeController],
+//         providers: [EmployeeService, {
+//           provide: PrismaService,          
+//           useValue: {
+//             employee: {
+//               findMany: jest.fn().mockReturnValue(mockReturnEmployeesData),
+//               create: jest.fn().mockReturnValue(mockReturnEmployee),
+//               update: jest.fn().mockReturnValue(mockReturnEmployee),
+//               delete: jest.fn().mockReturnValue(mockReturnEmployee)
+
+//             }
+//           }
+//         }],
+//       }).compile();
+      
+
+//     employeeService = moduleRef.get<EmployeeService>(EmployeeService);
+//     prismaService = moduleRef.get<PrismaService>(PrismaService)
+//   });
+
+//   describe('Get Employees', () => {
+//     it('should be defined', async () => {
+//       const result = jest.fn().mockReturnValue(mockReturnEmployeesData)
+//       jest.spyOn(prismaService.employee,'findMany').mockImplementation(result);
+
+//       await employeeService.getAllEmployees()
+//       // expect(result).toBeCalledWith()
+//       // expect(await employeeController.findMany()).toBe(result);
+
+//     });
+//   });
+
+//   describe('Create Employee', () => {
+//     it('Create an Employee', async () => {
+//       const result = jest.fn().mockReturnValue(mockReturnEmployee)
+//       jest.spyOn(prismaService.employee,'create').mockImplementation(result);
+
+//       await employeeService.createEmployee(
+//         {
+//           id: 6,
+//           firstName: "raj",
+//           lastName: "shekar",
+//           departmentId: 3
+//       }
+//       )
+
+//     });
+//   });
+
+//   describe("Update Employee", () => {
+//     it('update an employee', async () => {
+//       const mockUpdateEmployee = jest.fn().mockReturnValue(mockReturnEmployee)
+//       jest.spyOn(prismaService.employee, 'update').mockImplementation(mockUpdateEmployee)
+//       await employeeService.updateEmployee(6, mockReturnEmployee)
+//       expect(mockUpdateEmployee).toBeCalledWith({
+//         where: {
+//           id: 6
+//         },
+//         data: {
+//           firstName: "raj",
+//           lastName: "shekar",
+//           departmentId: 3
+//         }
+//       })
+//     })
+//   })
+
+//   describe("Delete Employee", ()=>{
+//     it('delete an employee', async ()=>{
+//       const mockDeleteEmployee = jest.fn().mockReturnValue(mockReturnEmployee)
+//       jest.spyOn(prismaService.employee, 'delete').mockImplementation(mockDeleteEmployee)
+//       await employeeService.deleteEmployee(6)
+//       expect(mockDeleteEmployee).toBeCalledWith({
+//         where:{
+//           id:6
+//         }
+//       })
+//     })
+//   })
+// });
+
+
+
 import { Test } from '@nestjs/testing';
 import { EmployeeController } from './employee.controller';
 import { EmployeeService } from './employee.service';
 import supertest from 'supertest';
 import { PrismaService } from 'src/prisma.service';
-import { Module } from '@nestjs/common';
+import { Module, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
     
@@ -179,7 +295,7 @@ const mockReturnEmployeesData = [
 ]
 
 const mockReturnEmployee =  {
-  // id: 6,
+  //id: 6,
   firstName: "raj",
   lastName: "shekar",
   departmentId: 3
@@ -223,7 +339,7 @@ describe('EmployeeController', () => {
       // expect(await employeeController.findMany()).toBe(result);
 
     });
-  });
+  }); 
 
   describe('Create Employee', () => {
     it('Create an Employee', async () => {
@@ -273,4 +389,10 @@ describe('EmployeeController', () => {
     })
   })
 });
+
+
+
+
+
+
 

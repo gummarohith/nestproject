@@ -19,8 +19,39 @@ model Department {
 }
 model Employee {
   id           Int         @id @default(autoincrement())
-  firstName    String
+  firstName    String      
+  
   lastName     String
   departmentId Int
   department   Department  @relation(fields: [departmentId], references: [id])
+  user         User[]
 }
+
+// model Employee {
+//   id           Int       @id @default(autoincrement())
+//   name         String
+//   departments  Department[]
+//   users        User[]
+//   createdAt    DateTime  @default(now())
+//   updatedAt    DateTime  @updatedAt
+//   status       String
+// }
+
+// model Department {
+//   id           Int       @id @default(autoincrement())
+//   name         String
+//   employees    Employee[]
+//   createdAt    DateTime  @default(now())
+//   updatedAt    DateTime  @updatedAt
+// }
+
+model User {
+  id           Int       @id @default(autoincrement())
+  name         String
+  employeeId   Int
+  employee     Employee   @relation(fields: [employeeId], references: [id])
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  status       Int
+}
+
